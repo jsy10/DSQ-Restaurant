@@ -1,4 +1,14 @@
+const express=require("express");
 const mongoose = require('mongoose')
+const Menu = require('./menuModel')
+
+const app = express();
+
+// const MENU = require('Menu.csv')
+
+const MENU = await Menu.find({}, {name:1, _id:0})
+
+console.log(MENU)
 
 const ordersSchema = mongoose.Schema(
     {
@@ -6,22 +16,30 @@ const ordersSchema = mongoose.Schema(
             type: String,
             required: true
         },
+
         address: {
             type: String,
             required: true
         },
-        floor: {
-            type: Number,
+
+        order: {
+            type: Array(String),
+            enum: MENU,
             required: true
         },
-        // piata kai quantity
-        order: {
-            type: Array(Array(2)),
-            required: true,
-        },
+
         price: {
             type: Number,
+            incremented: false,
+            // value: 1,
+            default: 0
+        },
+
+        payment: {
+            type: String,
+            enum: ['cash', 'card', 'coupons'],
             required: true,
+            default: 'cash'
         }
     },
     {

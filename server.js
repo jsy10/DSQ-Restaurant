@@ -6,6 +6,8 @@ const app = express();
 
 const uri = "mongodb+srv://jgsimeonidis:kwdikos@cluster0.flkabzj.mongodb.net/?retryWrites=true&w=majority"
 
+app.use(express.json())
+
 // route
 app.get('/', (req, res) => {
     res.send('Hello!')
@@ -98,7 +100,7 @@ app.get('/menu', async(req, res) => {
 
 app.get('/orders', async(req, res) => {
     try {
-        const orders = await Orders.find({}).sort({ timestamp: -1 });
+        const orders = await Orders.find({});
         res.status(200).json(orders);
     } catch (error) {
         res.status(500).json({message: error.message})
@@ -117,7 +119,18 @@ app.get('/orders', async(req, res) => {
 
 app.post('/ordering', async(req, res) => {
     try {
-        const order = await Orders.create(req.body)
+        let total_price = 0;
+        let this_order = req.body;
+
+        // compute the total price 
+        for (let i in this_order['order']) {
+            var this_price = await Menu.find({name: this_order['order'][i]}, {_id:0, price:1});
+            total_price += this_price[0]['price'];
+        }
+
+        this_order['price'] = total_price
+
+        const order = await Orders.create(this_order)
         res.status(200).json(order);
         
     } catch (error) {
@@ -125,11 +138,6 @@ app.post('/ordering', async(req, res) => {
         res.status(500).json({message: error.message})
     }
 })
-
-
-
-
-
 
 async function connect() {
     try {
