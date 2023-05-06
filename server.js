@@ -3,10 +3,18 @@ const mongoose = require("mongoose");
 const Menu = require('./models/menuModel')
 const Orders = require('./models/ordersModel')
 const app = express();
-
 const uri = "mongodb+srv://jgsimeonidis:kwdikos@cluster0.flkabzj.mongodb.net/?retryWrites=true&w=majority"
 
 app.use(express.json())
+
+var myHeaders = new Headers();
+myHeaders.append("apikey", "zDyUy0wGWn163GrCx856NgUx1r7GpVFd");
+
+var requestOptions = {
+  method: 'GET',
+  redirect: 'follow',
+  headers: myHeaders
+};
 
 // route
 app.get('/', (req, res) => {
@@ -81,16 +89,19 @@ app.get('/innit_db', (req, res) => {
 
 
 app.get('/menu', async(req, res) => {
+    // try {
+    //     const currency = req.app;
+    //     console.log("koures")
+    //     var x = await fetch(`https://api.apilayer.com/fixer/convert?to=${gbp}&from=eur&amount=${54.9}`, requestOptions)
+    //     let y = await x.text();
+
+    //     let w = y.slice(y.search("result") + 'result" '.length + 1, y.length - 3)
+
+    // } catch (error) {
+    //     res.status(500).json({message: error.message})
+    // }
+
     try {
-        // const Appetizers = await Menu.find({category: "Appetizers"});
-        // const Drinks = await Menu.find({category: "Drinks"});
-        // const Main_dishes = await Menu.find({category: "main_dishes"});
-        // console.log('Appetizers');
-        // res.status(200).json(Appetizers);
-        // console.log('Drinks');
-        // res.status(200).json(Drinks);
-        // console.log('Main_dishes');
-        // res.status(200).json(Main_dishes);
         const menu = await Menu.find({}).sort({ category: 1, price: 1 });
         res.status(200).json(menu);
     } catch (error) {

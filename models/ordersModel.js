@@ -1,14 +1,34 @@
 const express=require("express");
-const mongoose = require('mongoose')
-const Menu = require('./menuModel')
+const mongoose = require('mongoose');
+// const Menu = require('./menuModel');
 
-const app = express();
+// const app = express();
 
-// const MENU = require('Menu.csv')
+// app.use(express.json())
 
-const MENU = await Menu.find({}, {name:1, _id:0})
 
-console.log(MENU)
+// async function getMenu() {
+//     try {
+        // mm = await Menu.find({}, {name:1, _id:0});
+        // console.log(mm);
+//     } catch(error) {
+//         console.log('error: ' + error)
+//     }    
+// }    
+        // MENU = await Menu.find({}, {name:1, _id:0});
+
+        // const MENU = await getMenu()
+        // let mm = 0;
+
+        // getMenu(mm);
+
+        // const MENU = Menu.find({}, {name:1, _id:0}).then(response => {console.log(response)}).catch(error => { console.error('error: ' + {error})})
+        // let mm = [];
+        // for (let i in MENU) {
+        //     console.log(MENU[i]['name'])
+        //     mm[i] = MENU[i]['name'];
+        // }
+        // console.log('menu:  ' + mm)
 
 const ordersSchema = mongoose.Schema(
     {
@@ -24,7 +44,8 @@ const ordersSchema = mongoose.Schema(
 
         order: {
             type: Array(String),
-            enum: MENU,
+            enum: ["Andromeda", "misos krasos", "pansetakia"],
+            // enum: mm,
             required: true
         },
 
@@ -51,3 +72,10 @@ const ordersSchema = mongoose.Schema(
 const Orders = mongoose.model('Orders', ordersSchema);
 
 module.exports = Orders;
+
+//     } catch(error) {
+//         console.log('error: ' + error)
+//     }    
+// }
+
+// getMenu();
