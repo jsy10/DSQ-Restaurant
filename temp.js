@@ -1,5 +1,5 @@
 var myHeaders = new Headers();
-myHeaders.append("apikey", "zDyUy0wGWn163GrCx856NgUx1r7GpVFd");
+myHeaders.append("apikey", "unz9cn1ujfUzbBCEiF4jBpThuwuR2pv7");
 let file =  "https://api.apilayer.com/fixer/convert?to=gbp&from=eur&amount=54.9"
 
 var requestOptions = {
@@ -20,8 +20,8 @@ async function getText(file) {
         let x = await fetch(file, requestOptions)
         let y = await x.text();
 
-        let w = y.slice(y.search("result") + 'result" '.length + 1, y.length - 3)
-        
+        let w = Number(y.slice(y.search("result") + 'result" '.length + 1, y.length - 3))
+        console.log(`:${w+1}:`)
     } catch(error) {
         console.log('error', error);
     }

@@ -1,14 +1,15 @@
-const express=require("express");
+const express = require("express");
 const mongoose = require("mongoose");
 const Menu = require('./models/menuModel')
 const Orders = require('./models/ordersModel')
 const app = express();
 const uri = "mongodb+srv://jgsimeonidis:kwdikos@cluster0.flkabzj.mongodb.net/?retryWrites=true&w=majority"
+// import Orders = { Course } from './course.js';
 
 app.use(express.json())
 
 var myHeaders = new Headers();
-myHeaders.append("apikey", "zDyUy0wGWn163GrCx856NgUx1r7GpVFd");
+myHeaders.append("apikey", "unz9cn1ujfUzbBCEiF4jBpThuwuR2pv7");
 
 var requestOptions = {
   method: 'GET',
@@ -16,91 +17,14 @@ var requestOptions = {
   headers: myHeaders
 };
 
+
 // route
 app.get('/', (req, res) => {
-    res.send('Hello!')
+    res.send('Welcome to DSQ Restaurant!')
 })
 
-
-
-app.get('/innit_db', (req, res) => {
-    // piata = [{ name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 },
-    //         { name: "fai", category: "kapoia", price: 10 }]
-    // const menu = new Menu({
-    //     name: 'Andromeda',
-    //     category: 'Appetizers',
-    //     price: 5.9
-    // });
-    // menu.save().then((result) => {
-    //     res.send(result);
-    // }).catch((err) => {
-    //     console.log(err);
-    // })
-    // const menu1 = new Menu({
-    //     name: 'misos krasos',
-    //     category: 'Drinks',
-    //     price: 4.5
-    // });
-    // menu1.save().then((result) => {
-    //     res.send(result);
-    // }).catch((err) => {
-    //     console.log(err);
-    // })
-
-    const menu = new Menu({
-        name: 'pansetakia',
-        category: 'Main_dishes',
-        price: 5.5
-    });
-    menu.save().then((result) => {
-        res.send(result);
-    }).catch((err) => {
-        console.log(err);
-    })
-    
-
-})
-
-
-
-
+// Returns menu
 app.get('/menu', async(req, res) => {
-    // try {
-    //     const currency = req.app;
-    //     console.log("koures")
-    //     var x = await fetch(`https://api.apilayer.com/fixer/convert?to=${gbp}&from=eur&amount=${54.9}`, requestOptions)
-    //     let y = await x.text();
-
-    //     let w = y.slice(y.search("result") + 'result" '.length + 1, y.length - 3)
-
-    // } catch (error) {
-    //     res.status(500).json({message: error.message})
-    // }
-
     try {
         const menu = await Menu.find({}).sort({ category: 1, price: 1 });
         res.status(200).json(menu);
@@ -109,39 +33,60 @@ app.get('/menu', async(req, res) => {
     }
 })
 
+// Returns menu with currency of users choice
+app.get('/menu/:currency', async(req, res) => {
+    try {
+
+        const menu = await Menu.find({}).sort({ category: 1, price: 1 });
+        const {currency} = await req.params;
+
+        // Check if currency is valid and update the menu
+        for (let i in menu) {
+            var x = await fetch(`https://api.apilayer.com/fixer/convert?to=${currency}&from=eur&amount=${menu[i]["price"]}`, requestOptions);
+            let y = await x.text()
+
+            if (y.includes('error')) {
+                const errorType = y.slice( y.search("type") + 'type" '.length + 1, y.search("info") - 11 );
+                const errorCode = Number( y.slice( y.search("code") + 'type" '.length + 1, y.search("type") - 11 ));
+                res.status(errorCode).json({message: errorType});
+            } else {
+                let newPrice = Number(y.slice(y.search("result") + 'result" '.length + 1, y.length - 3));
+                menu[i]["price"] = newPrice;
+            }
+        }
+
+        res.status(200).json(menu);
+
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+})
+
+// Returnns orders for merchant
 app.get('/orders', async(req, res) => {
     try {
-        const orders = await Orders.find({});
+        const orders = await Orders.getMenu().find({});
         res.status(200).json(orders);
     } catch (error) {
         res.status(500).json({message: error.message})
     }
 })
 
-// app.get('/orders/:id', async(req, res) => {
-//     try {
-//         const {id} = req.params;
-//         const order = await Orders.findById(id);
-//         res.status(200).json(order);
-//     } catch (error) {
-//         res.status(500).json({message: error.message})
-//     }
-// })
-
+// Makes order for customer
 app.post('/ordering', async(req, res) => {
     try {
         let total_price = 0;
         let this_order = req.body;
 
-        // compute the total price 
+        // Compute the total price and update it
         for (let i in this_order['order']) {
             var this_price = await Menu.find({name: this_order['order'][i]}, {_id:0, price:1});
             total_price += this_price[0]['price'];
         }
-
         this_order['price'] = total_price
 
-        const order = await Orders.create(this_order)
+        // Insert the order in Orders
+        const order = await Orders.create(this_order);
         res.status(200).json(order);
         
     } catch (error) {
@@ -150,6 +95,7 @@ app.post('/ordering', async(req, res) => {
     }
 })
 
+// Connect to Mongodb
 async function connect() {
     try {
         await mongoose.connect(uri);
@@ -161,6 +107,7 @@ async function connect() {
 
 connect();
 
+// Initiate the server
 app.listen(3000, () => {
     console.log("Server started on port 3000");
 });

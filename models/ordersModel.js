@@ -1,15 +1,15 @@
-const express=require("express");
+const express = require("express");
 const mongoose = require('mongoose');
-// const Menu = require('./menuModel');
+const Menu = require('./menuModel');
 
-// const app = express();
+const app = express();
 
-// app.use(express.json())
+app.use(express.json())
 
 
-// async function getMenu() {
+// export async function getMenu() {
 //     try {
-        // mm = await Menu.find({}, {name:1, _id:0});
+//         mm = await Menu.find({}, {name:1, _id:0});
         // console.log(mm);
 //     } catch(error) {
 //         console.log('error: ' + error)
@@ -52,7 +52,6 @@ const ordersSchema = mongoose.Schema(
         price: {
             type: Number,
             incremented: false,
-            // value: 1,
             default: 0
         },
 
