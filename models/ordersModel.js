@@ -6,15 +6,17 @@ const app = express();
 
 app.use(express.json())
 
-
-// export async function getMenu() {
+// async function getMenu() {
 //     try {
 //         mm = await Menu.find({}, {name:1, _id:0});
-        // console.log(mm);
+//         console.log(mm);
+//         return mm
 //     } catch(error) {
 //         console.log('error: ' + error)
 //     }    
-// }    
+// };
+
+// const menu = getMenu();
         // MENU = await Menu.find({}, {name:1, _id:0});
 
         // const MENU = await getMenu()
@@ -28,7 +30,7 @@ app.use(express.json())
         //     console.log(MENU[i]['name'])
         //     mm[i] = MENU[i]['name'];
         // }
-        // console.log('menu:  ' + mm)
+// console.log('menu:  ' + menu)
 
 const ordersSchema = mongoose.Schema(
     {
@@ -44,14 +46,16 @@ const ordersSchema = mongoose.Schema(
 
         order: {
             type: Array(String),
-            enum: ["Andromeda", "misos krasos", "pansetakia"],
-            // enum: mm,
+            enum: ["Andromeda", "Riganada", "Elliniki", "Pansetakia", "Mprizolakia", "Tigania Kotopoulo", 
+                "Tigania Xoirini", "Saganaki", "Kolokithokeftedes", "Tirokroketes", "Sfakiani pita", "Feta",
+                "Alpha", "Bergina", "Mamos", "Kokkino Krasi", "Leuko Krasi", "Nero", "Tsipouro",],
+            // enum: menu,
             required: true
         },
 
         price: {
             type: Number,
-            incremented: false,
+            required: true,
             default: 0
         },
 

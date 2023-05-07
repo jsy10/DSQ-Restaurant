@@ -65,7 +65,7 @@ app.get('/menu/:currency', async(req, res) => {
 // Returnns orders for merchant
 app.get('/orders', async(req, res) => {
     try {
-        const orders = await Orders.getMenu().find({});
+        const orders = await Orders.find({});
         res.status(200).json(orders);
     } catch (error) {
         res.status(500).json({message: error.message})
@@ -77,12 +77,26 @@ app.post('/ordering', async(req, res) => {
     try {
         let total_price = 0;
         let this_order = req.body;
+        let this_price;
 
         // Compute the total price and update it
-        for (let i in this_order['order']) {
-            var this_price = await Menu.find({name: this_order['order'][i]}, {_id:0, price:1});
-            total_price += this_price[0]['price'];
+        if (typeof(this_order["order"]) == "string") {
+
+            // the total price of this order is the price of the sting in order
+            this_price = await Menu.find({name: this_order['order']}, {_id:0, price:1});
+            total_price = this_price[0]['price'];
+
         }
+        else {
+
+            // the total price of this order is the sum of prices of the array in order
+            for (let i in this_order['order']) {
+                this_price = await Menu.find({name: this_order['order'][i]}, {_id:0, price:1});
+                total_price += this_price[0]['price'];
+            }
+        
+        }
+
         this_order['price'] = total_price
 
         // Insert the order in Orders
