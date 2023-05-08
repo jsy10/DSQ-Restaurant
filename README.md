@@ -3,8 +3,19 @@
 ## Introduction
 
 For this project I was assigned to create the back-end, using Node.js & MongoDB, of an online delivery application that allows guest-users to view items & submit orders.
-I made a database in http://mongodb.com with 2 collections, 1 for menus that contains 4 document (id, name, category, price) and 1 for the orders that contains 8 documents
+I made a database in http://mongodb.com with 2 collections, 1 for menu that contains 4 document (id, name, category, price) and 1 for the orders that contains 8 documents
 (id, name, address, order, price, payment, createdAt, updatedAt).
+
+
+## Build Instructions
+
+To initiate this project you need to have Node.js (npm) installed, mongoose-npm (https://www.npmjs.com/package/mongoose) and express-npm (https://www.npmjs.com/package/express).
+To run the code write (npm run serve) which start the Serveron port 3000, and then connects to MongoDB (my DB is public for any IP). The routes that are availiabe are: 
+1). / for welcoming you to the restaurant,
+2). /menu for Menu,
+3). /menu/currency Currency is a parametr,
+4). /orders for mechant to review orders and
+5). /ordering to place an order
 
 
 ## Menu
