@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Menu = require('./models/menuModel')
+const Menu = require('./models/menuModel');
 const Orders = require('./models/ordersModel')
 const app = express();
 const uri = "mongodb+srv://jgsimeonidis:kwdikos@cluster0.flkabzj.mongodb.net/?retryWrites=true&w=majority"
@@ -82,14 +82,14 @@ app.post('/ordering', async(req, res) => {
         // Compute the total price and update it
         if (typeof(this_order["order"]) == "string") {
 
-            // the total price of this order is the price of the sting in order
+            // The total price of this order is the price of the sting in order
             this_price = await Menu.find({name: this_order['order']}, {_id:0, price:1});
             total_price = this_price[0]['price'];
 
         }
         else {
 
-            // the total price of this order is the sum of prices of the array in order
+            // The total price of this order is the sum of prices of the array in order
             for (let i in this_order['order']) {
                 this_price = await Menu.find({name: this_order['order'][i]}, {_id:0, price:1});
                 total_price += this_price[0]['price'];
