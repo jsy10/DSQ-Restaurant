@@ -4,7 +4,6 @@ const Menu = require('./models/menuModel');
 const Orders = require('./models/ordersModel')
 const app = express();
 const uri = "mongodb+srv://jgsimeonidis:kwdikos@cluster0.flkabzj.mongodb.net/?retryWrites=true&w=majority"
-// import Orders = { Course } from './course.js';
 
 app.use(express.json())
 

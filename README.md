@@ -10,10 +10,10 @@ I made a database in http://mongodb.com with 2 collections, 1 for menu that cont
 ## Build Instructions
 
 To initiate this project you need to have Node.js (npm) installed, mongoose-npm (https://www.npmjs.com/package/mongoose) and express-npm (https://www.npmjs.com/package/express).
-To run the code write (npm run serve) which start the Serveron port 3000, and then connects to MongoDB (my DB is public for any IP). The routes that are availiabe are: 
+To run the code write ($ npm run serve) which start the Server on port 3000, and then connects to MongoDB (my DB is public for any IP). The routes that are available are: 
 1). / for welcoming you to the restaurant,
 2). /menu for Menu,
-3). /menu/currency Currency is a parametr,
+3). /menu/currency Currency is a parameter,
 4). /orders for mechant to review orders and
 5). /ordering to place an order
 
@@ -21,8 +21,8 @@ To run the code write (npm run serve) which start the Serveron port 3000, and th
 ## Menu
 
 The online delivery shop DSQ Restaurant allows the user to take a look at the Restaurant's menu (route: /menu) that consists of many dished-drinks from 5 categories (Appetizer, Beers, Drinks, Main Dish, Salad) and the default price is in Euros.
-Also on route: /menu/currency the user can type the currency he/she prefers to convert the prices of the menu to that currency (ex. route: /mene/gbp).
-This is possible through a publicly availiable API (http://fixer.io).
+Also on route: /menu/currency the user can type the currency he/she prefers to convert the prices of the menu to that currency (ex. route: /menu/gbp).
+This is possible through a publicly available API (http://fixer.io).
 
 
 ## Order
