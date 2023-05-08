@@ -19,4 +19,4 @@ This is possible through a publicly availiable API (http://fixer.io).
 The guest can make an order from menu throught a JSON post request (I use Insomnia: https://insomnia.rest/ for this matter). 
 This request must be an Object that includes 2 strings ("name", "address") and 1 string or array of strings ("order") with names of dishes-drinks from menu, it is not mandatory to choose a way of payment ("cash", "card", "coupons") as it's default value will be "cash".
 
-The merchant is able to view the incoming orders as the whole orders collection is been shown on route /orders.
+The merchant is able to view the incoming orders as the whole orders collection is been shown on route /orders. I have already made some orders so the collection is not empty.
