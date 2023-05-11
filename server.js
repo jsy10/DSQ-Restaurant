@@ -8,7 +8,7 @@ const uri = "mongodb+srv://jgsimeonidis:kwdikos@cluster0.flkabzj.mongodb.net/?re
 app.use(express.json())
 
 var myHeaders = new Headers();
-myHeaders.append("apikey", "unz9cn1ujfUzbBCEiF4jBpThuwuR2pv7");
+myHeaders.append("apikey", "dQ7JOk70RA4mytmGHqFxNm71nF0q5LHy");
 
 var requestOptions = {
   method: 'GET',
@@ -41,16 +41,16 @@ app.get('/menu/:currency', async(req, res) => {
 
         // Check if currency is valid and update the menu
         for (let i in menu) {
-            var x = await fetch(`https://api.apilayer.com/fixer/convert?to=${currency}&from=eur&amount=${menu[i]["price"]}`, requestOptions);
-            let y = await x.text()
 
-            if (y.includes('error')) {
-                const errorType = y.slice( y.search("type") + 'type" '.length + 1, y.search("info") - 11 );
-                const errorCode = Number( y.slice( y.search("code") + 'type" '.length + 1, y.search("type") - 11 ));
-                res.status(errorCode).json({message: errorType});
+            let curr = await fetch(`https://api.apilayer.com/fixer/convert?to=${currency}&from=eur&amount=${menu[i]["price"]}`, requestOptions);
+            curr = await curr.text() 
+            curr = JSON.parse(curr)
+            console.log(curr)
+
+            if (curr["success"] == false) {
+                res.status(curr["error"]["code"]).json({message: curr["error"]["type"]});
             } else {
-                let newPrice = Number(y.slice(y.search("result") + 'result" '.length + 1, y.length - 3));
-                menu[i]["price"] = newPrice;
+                menu[i]["price"] = curr["result"];
             }
         }
 
